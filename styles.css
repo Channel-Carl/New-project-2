@@ -11,6 +11,11 @@
   --coral: #b9483c;
   --blue: #233c5f;
   --shadow: 0 24px 60px rgba(30, 34, 28, 0.14);
+  --serif:
+    "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  --latin:
+    "Fraunces", "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 * {
@@ -25,10 +30,17 @@ body {
   margin: 0;
   color: var(--ink);
   background:
+    radial-gradient(125% 70% at 82% -8%, rgba(15, 107, 102, 0.07), transparent 55%),
+    radial-gradient(120% 60% at 0% 102%, rgba(197, 132, 44, 0.08), transparent 52%),
     linear-gradient(90deg, rgba(32, 34, 31, 0.035) 1px, transparent 1px),
     linear-gradient(180deg, rgba(32, 34, 31, 0.03) 1px, transparent 1px),
     var(--paper);
-  background-size: 88px 88px;
+  background-size:
+    100% 100%,
+    100% 100%,
+    88px 88px,
+    88px 88px;
+  background-attachment: fixed, fixed, scroll, scroll;
   font-family:
     "Noto Sans SC",
     "Source Han Sans SC",
@@ -44,6 +56,17 @@ body::selection {
   background: var(--teal-dark);
 }
 
+/* 纸纹颗粒：极轻的全站质感叠层 */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
 body.lightbox-open {
   overflow: hidden;
 }
@@ -55,6 +78,12 @@ a {
 
 button {
   font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 .icon-sprite {
@@ -104,6 +133,7 @@ button {
 }
 
 .nav-links a {
+  position: relative;
   display: inline-flex;
   min-width: 64px;
   height: 40px;
@@ -117,10 +147,26 @@ button {
     background 180ms ease;
 }
 
+.nav-links a::after {
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  width: 0;
+  height: 1.5px;
+  background: var(--amber);
+  content: "";
+  transform: translateX(-50%);
+  transition: width 220ms var(--ease);
+}
+
 .nav-links a:hover,
 .nav-links a.active {
   background: rgba(255, 250, 240, 0.12);
   color: #fffaf0;
+}
+
+.nav-links a.active::after {
+  width: 22px;
 }
 
 .primary-action,
@@ -150,43 +196,98 @@ button {
 .hero {
   position: relative;
   display: grid;
-  min-height: 82vh;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
   align-items: end;
   gap: 48px;
   overflow: hidden;
-  padding: 132px max(24px, calc((100vw - 1120px) / 2)) 72px;
+  padding: 118px max(24px, calc((100vw - 1120px) / 2)) 68px;
   color: var(--ink);
 }
 
 .hero-backdrop {
-  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* 巨大的半透明衬线署名，作为编辑式底纹 */
+.hero-backdrop::before {
+  position: absolute;
+  top: 46%;
+  right: -2%;
+  font-family: var(--latin);
+  font-size: clamp(9rem, 26vw, 24rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 0.8;
+  color: rgba(15, 107, 102, 0.06);
+  content: "data.";
+  transform: translateY(-50%);
+}
+
+.hero-content,
+.hero-panel {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-content {
   max-width: 760px;
-  animation: rise-in 760ms ease both;
+  animation: rise-in 760ms var(--ease) both;
 }
 
 .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   margin: 0 0 14px;
   color: var(--amber);
-  font-size: 0.82rem;
+  font-family: var(--latin);
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+.eyebrow::before {
+  width: 26px;
+  height: 1.5px;
+  background: currentColor;
+  content: "";
+}
+
+/* 章节编号：编辑/SaaS 式索引，编号代替起始短横线 */
+.eyebrow:has(.eyebrow-num)::before {
+  display: none;
+}
+
+.eyebrow-num {
+  font-size: 1.12rem;
   font-weight: 900;
-  text-transform: uppercase;
+  font-style: normal;
+  font-variant-numeric: lining-nums;
+  letter-spacing: 0;
+}
+
+.eyebrow-num::after {
+  display: inline-block;
+  width: 18px;
+  height: 1.5px;
+  margin: 0 2px 0 9px;
+  background: currentColor;
+  vertical-align: middle;
+  content: "";
 }
 
 .hero h1 {
   margin: 0;
-  font-family:
-    "Noto Serif SC",
-    "Source Han Serif SC",
-    "Songti SC",
-    serif;
-  font-size: 5rem;
+  font-family: var(--serif);
+  font-size: 5.2rem;
   font-weight: 900;
   line-height: 1.05;
-  letter-spacing: 0;
+  letter-spacing: 0.01em;
 }
 
 .hero-role {
@@ -298,12 +399,8 @@ button {
 .metric span {
   display: block;
   color: var(--teal-dark);
-  font-family:
-    "Noto Serif SC",
-    "Source Han Serif SC",
-    "Songti SC",
-    serif;
-  font-size: 1.7rem;
+  font-family: var(--latin);
+  font-size: 1.78rem;
   font-weight: 900;
   line-height: 1.15;
 }
@@ -337,11 +434,7 @@ button {
 .section-heading h2,
 .contact-section h2 {
   margin: 0;
-  font-family:
-    "Noto Serif SC",
-    "Source Han Serif SC",
-    "Songti SC",
-    serif;
+  font-family: var(--serif);
   font-size: 3rem;
   font-weight: 900;
   line-height: 1.16;
@@ -429,6 +522,16 @@ button {
   background: rgba(255, 250, 240, 0.82);
   box-shadow: 0 18px 50px rgba(30, 34, 28, 0.08);
   overflow: hidden;
+  transition:
+    transform 320ms var(--ease),
+    box-shadow 320ms var(--ease),
+    border-color 320ms var(--ease);
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(15, 107, 102, 0.34);
+  box-shadow: 0 28px 70px rgba(30, 34, 28, 0.14);
 }
 
 .project-card::before {
@@ -437,6 +540,15 @@ button {
   width: 7px;
   background: var(--teal);
   content: "";
+  transition: width 320ms var(--ease);
+}
+
+.project-card:hover::before {
+  width: 11px;
+}
+
+.project-card:hover .project-index {
+  color: rgba(15, 107, 102, 0.4);
 }
 
 .project-card.featured::before {
@@ -444,15 +556,14 @@ button {
 }
 
 .project-index {
-  color: rgba(32, 34, 31, 0.18);
-  font-family:
-    "Noto Serif SC",
-    "Source Han Serif SC",
-    "Songti SC",
-    serif;
-  font-size: 3.2rem;
-  font-weight: 900;
+  color: rgba(32, 34, 31, 0.2);
+  font-family: var(--latin);
+  font-size: 3.6rem;
+  font-weight: 400;
+  font-style: italic;
   line-height: 1;
+  font-variant-numeric: lining-nums;
+  transition: color 320ms var(--ease);
 }
 
 .project-main h3 {
@@ -558,8 +669,10 @@ button {
   border-radius: 6px;
   background: rgba(15, 107, 102, 0.1);
   color: var(--teal-dark);
-  font-size: 0.78rem;
-  font-weight: 900;
+  font-family: var(--latin);
+  font-size: 0.86rem;
+  font-weight: 600;
+  font-style: italic;
 }
 
 .showcase-frame {
@@ -772,15 +885,17 @@ button {
 }
 
 .skill-card {
+  display: flex;
+  flex-direction: column;
   min-height: 160px;
   padding: 24px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fffaf0;
   transition:
-    transform 180ms ease,
-    box-shadow 180ms ease,
-    border-color 180ms ease;
+    transform 320ms var(--ease),
+    box-shadow 320ms var(--ease),
+    border-color 320ms var(--ease);
 }
 
 .skill-card:hover {
@@ -798,6 +913,64 @@ button {
 .skill-card p {
   margin: 0;
   color: #444942;
+}
+
+/* Bento：主打卡通栏 + 深色锚点，语言能力通栏收尾 */
+.skill-card--feature,
+.skill-card--wide {
+  grid-column: 1 / -1;
+}
+
+.skill-card--feature {
+  justify-content: center;
+  gap: 18px;
+  border-color: rgba(15, 107, 102, 0.38);
+  background:
+    radial-gradient(120% 150% at 100% 0%, rgba(197, 132, 44, 0.1), transparent 60%),
+    linear-gradient(160deg, rgba(15, 107, 102, 0.18), rgba(15, 107, 102, 0.07));
+  box-shadow: 0 16px 40px rgba(15, 107, 102, 0.1);
+}
+
+.skill-card--feature:hover {
+  border-color: rgba(15, 107, 102, 0.42);
+  box-shadow: 0 22px 52px rgba(30, 34, 28, 0.12);
+}
+
+.skill-card--feature h3 {
+  margin: 0;
+  color: var(--teal-dark);
+  font-size: 1.5rem;
+}
+
+.skill-tag {
+  align-self: start;
+  padding: 4px 13px;
+  border-radius: 999px;
+  background: rgba(15, 107, 102, 0.1);
+  color: var(--teal-dark);
+  font-family: var(--latin);
+  font-size: 0.82rem;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.skill-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.skill-tools span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 4px 13px;
+  border-radius: 6px;
+  border: 1px solid rgba(15, 107, 102, 0.22);
+  background: rgba(15, 107, 102, 0.07);
+  color: var(--teal-dark);
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .advantage-section {
@@ -830,13 +1003,10 @@ button {
   display: block;
   margin-bottom: 30px;
   color: var(--coral);
-  font-family:
-    "Noto Serif SC",
-    "Source Han Serif SC",
-    "Songti SC",
-    serif;
-  font-size: 2.4rem;
-  font-weight: 900;
+  font-family: var(--latin);
+  font-size: 2.7rem;
+  font-weight: 400;
+  font-style: italic;
   line-height: 1;
   content: counter(strengths, decimal-leading-zero);
 }
@@ -1125,7 +1295,9 @@ button {
 
   .site-header,
   .hero-actions,
-  .toast {
+  .toast,
+  .grain,
+  .hero-backdrop {
     display: none;
   }
 

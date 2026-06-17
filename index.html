@@ -8,10 +8,17 @@
       content="续辉扬的数据分析与商业分析实习简历网站，展示财务管理与数据科学双学位背景、千万级电商行为数据分析项目、挑战杯研究项目与 Coze Agent 实践。"
     />
     <title>续辉扬 | 数据分析与商业分析简历</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;700;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js" defer></script>
   </head>
   <body>
+    <div class="grain" aria-hidden="true"></div>
     <svg class="icon-sprite" aria-hidden="true">
       <symbol id="icon-chart" viewBox="0 0 24 24">
         <path d="M3 3v18h18" />
@@ -62,7 +69,7 @@
               <svg class="icon" aria-hidden="true"><use href="#icon-chart"></use></svg>
               查看项目经历
             </a>
-            <button class="secondary-action" type="button" data-copy="XXX" aria-label="复制邮箱">
+            <button class="secondary-action" type="button" data-copy="3115658957@qq.com" aria-label="复制邮箱">
               <svg class="icon" aria-hidden="true"><use href="#icon-mail"></use></svg>
               复制邮箱
             </button>
@@ -105,7 +112,7 @@
 
       <section class="section two-column" id="profile" aria-labelledby="profile-title">
         <div class="section-heading">
-          <p class="eyebrow">Profile</p>
+          <p class="eyebrow"><span class="eyebrow-num">01</span>Profile</p>
           <h2 id="profile-title">个人定位</h2>
         </div>
         <div class="profile-copy">
@@ -132,9 +139,8 @@
 
       <section class="section" id="projects" aria-labelledby="projects-title">
         <div class="section-heading wide">
-          <p class="eyebrow">Projects</p>
+          <p class="eyebrow"><span class="eyebrow-num">02</span>Projects</p>
           <h2 id="projects-title">项目经历</h2>
-          <p>用业务问题组织项目，而不是只罗列工具；招聘方可以快速看到数据规模、分析方法和落地结论。</p>
         </div>
 
         <div class="project-list">
@@ -322,13 +328,21 @@
 
       <section class="section skill-section" id="skills" aria-labelledby="skills-title">
         <div class="section-heading">
-          <p class="eyebrow">Skills</p>
+          <p class="eyebrow"><span class="eyebrow-num">03</span>Skills</p>
           <h2 id="skills-title">技能清单</h2>
         </div>
         <div class="skill-grid">
-          <article class="skill-card">
+          <article class="skill-card skill-card--feature">
+            <span class="skill-tag">核心能力</span>
             <h3>数据分析</h3>
-            <p>Python、Pandas、NumPy、SQL、Excel、Power BI</p>
+            <div class="skill-tools" aria-label="数据分析工具">
+              <span>Python</span>
+              <span>Pandas</span>
+              <span>NumPy</span>
+              <span>SQL</span>
+              <span>Excel</span>
+              <span>Power BI</span>
+            </div>
           </article>
           <article class="skill-card">
             <h3>AI 应用</h3>
@@ -338,7 +352,7 @@
             <h3>工具软件</h3>
             <p>MySQL、Python、Power BI、Excel、Coze</p>
           </article>
-          <article class="skill-card">
+          <article class="skill-card skill-card--wide">
             <h3>语言能力</h3>
             <p>英语：全英教学，可阅读英文技术文档和数据资料</p>
           </article>
@@ -347,7 +361,7 @@
 
       <section class="section advantage-section" aria-labelledby="advantages-title">
         <div class="section-heading wide">
-          <p class="eyebrow">Strengths</p>
+          <p class="eyebrow"><span class="eyebrow-num">04</span>Strengths</p>
           <h2 id="advantages-title">个人优势</h2>
         </div>
         <ol class="advantage-list">
@@ -361,7 +375,7 @@
 
       <section class="contact-section" id="contact" aria-labelledby="contact-title">
         <div>
-          <p class="eyebrow">Contact</p>
+          <p class="eyebrow"><span class="eyebrow-num">05</span>Contact</p>
           <h2 id="contact-title">期待数据分析与商业分析实习机会</h2>
           <p>目标岗位：数据分析实习生、商业分析实习生、经营分析实习生、用户研究 / 用户分析实习生。</p>
         </div>
